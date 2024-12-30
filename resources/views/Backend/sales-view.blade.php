@@ -6,28 +6,26 @@
 <div class="page-breadcrumb">
     <div class="row">
         <div class="col-7 align-self-center">
-            <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">View Customer</h4>
+            <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Sales Report</h4>
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item"><a href="#" class="text-muted">Customer</a>
+                        <li class="breadcrumb-item"><a href="#" class="text-muted">Appointment</a>
                         </li>
-                        <li class="breadcrumb-item text-muted active" aria-current="page">View Customer</li>
+                        <li class="breadcrumb-item text-muted active" aria-current="page">Sales Report</li>
                     </ol>
                 </nav>
             </div>
         </div>
-        <!-- <div class="col-5 align-self-center">
-                <div class="customize-input float-right">
-                    <select
-                        class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
-                        <option selected>Aug 19</option>
-                        <option value="1">July 19</option>
-                        <option value="2">Jun 19</option>
-                    </select>
-                </div>
-            </div> -->
+        {{-- <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <select name="forma" onchange="location = this.value;" class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option value="#">Table view</option>
+                    <option value="{{ route('appointments.index') }}">Calendar View</option>
+        </select>
     </div>
+</div> --}}
+</div>
 </div>
 <!-- ============================================================== -->
 <!-- End Bread crumb and right sidebar toggle -->
@@ -44,7 +42,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">List of Customer</h4>
+                    <h4 class="card-title">List of Available Sales Report</h4>
                     <h6 class="card-subtitle">
                         @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -61,40 +59,45 @@
                             </button>
                         </div>
                         @endif
-                        <!-- 
-                            On a per-column basis (i.e. order by a specific column and
-                            then a secondary column if the data in the first column is identical), through the
-                            <code> columns.orderData</code> option. -->
+
+                        <!-- On a per-column basis (i.e. order by a specific column and
+                                                                then a secondary column if the data in the first column is identical), through the
+                                                                <code> columns.orderData</code> option. -->
                     </h6>
                     <div class="table-responsive">
                         <table id="multi_col_order" class="table table-striped table-bordered display no-wrap" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Customer ID</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">HP</th>
+                                    <th class="text-center">Month</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customer as $cust)
+                                @foreach ($availableMonths as $month)
+                                @foreach ($availableYears as $year)
+                                @php
+                                $value = str_pad($month['number'], 2, '0', STR_PAD_LEFT) . '/' . $year;
+                                @endphp
                                 <tr>
-                                    <td class="text-center">{{ $cust->Customer_Id }}</td>
-                                    <td>{{ $cust->Customer_Name }}</td>
-                                    <td class="text-center">{{ $cust->Customer_HP }}</td>
+                                    <td class="text-center">{{ $value }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <a class="btn btn-primary btn-sm mr-2" href="{{ route('customer.show', ['id' => $cust->Customer_Id]) }}">
-                                                <i class="fas fa-pencil-alt"></i> View / Edit
+                                            <a class="btn btn-primary btn-sm mr-2" href="{{ route('sales-reports.view', ['month' => $month['number'], 'year' => $year]) }}" target="_blank">
+                                                <i class="fas fa-eye"></i> View
                                             </a>
-                                            <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmationModal">
-                                                <i class="fas fa-trash"></i> Delete
+                                            <a href="{{ route('sales-reports.download', ['month' => $month['number'], 'year' => $year]) }}" class="btn btn-success btn-sm mr-2">
+                                                <i class="fas fa-download"></i> Download
+                                            </a>
+                                            <a href="#" class="btn btn-secondary btn-sm mr-2" data-toggle="modal" data-target="#confirmationModal" data-month="{{ $month['number'] }}" data-year="{{ $year }}">
+                                                <i class="fas fa-share"></i> Send to Email
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
                                 @endforeach
-                                {{-- <tr>
+                                @endforeach
+                                {{--
+                                    <tr>
                                         <td>Tiger</td>
                                         <td>Nixon</td>
                                         <td>System Architect</td>
@@ -500,32 +503,32 @@
             </div>
         </div>
     </div>
-    <!-- Delete Modal -->
+    <!-- Send Email Modal -->
     <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Your Email</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this customer?
+                    We will proceed to send the report to this email address. You can change to your desired email.
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    @if($cust && isset($cust->Customer_Id))
-                    <form action="{{ route('customer.destroy', ['id' => $cust->Customer_Id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                    @endif
-                </div>
+                <form id="send-report-form" data-base-action="{{ route('sales-reports.email', ['month' => $month['number'], 'year' => $year]) }}" method="POST">
+                    @csrf
+                    <input class="form-control" value="@if (session('user_email')) {{ session('user_email') }} @endif" id="email" type="email" required name="email" placeholder="email address">
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
 
     <!-- ============================================================== -->
     <!-- End PAge Content -->
@@ -537,14 +540,33 @@
 @endsection
 @push('custom-scripts')
 <link href="../assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-
 <!--This page plugins -->
+
 <script src="../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../assets/js/pages/datatable/datatable-basic.init.js"></script>
 <script>
     $(document).ready(function() {
         // Auto-close alerts after 5 seconds (5000 milliseconds)
         $(".alert").delay(5000).slideUp(300);
+    });
+
+    $(document).ready(function() {
+        $('#confirmationModal').on('show.bs.modal', function(event) {
+            var baseUrl = "{{ url('/') }}";
+            var button = $(event.relatedTarget);
+            var month = button.data('month');
+            var year = button.data('year');
+            var userEmail = $('#email')
+                .val(); // Assuming the user's email is entered in the 'email' input
+
+            // Update the form action with the selected month and year
+            var form = $('#send-report-form');
+            var action = baseUrl + '/sendmail/' + month + '/' + year;
+            form.attr('action', action);
+
+            // Set the user's email in a hidden input
+            form.append('<input type="hidden" name="user_email" value="' + userEmail + '">');
+        });
     });
 </script>
 @endpush

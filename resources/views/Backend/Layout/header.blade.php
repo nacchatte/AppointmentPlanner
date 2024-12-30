@@ -11,7 +11,7 @@
             <!-- ============================================================== -->
             <div class="navbar-brand">
                 <!-- Logo icon -->
-                <a href="index.html">
+                <a href="#">
                     <b class="logo-icon">
                         <!-- Dark Logo icon -->
                         <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
@@ -24,7 +24,7 @@
                         <!-- dark Logo text -->
                         <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
                         <!-- Light Logo text -->
-                        <img src="../assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                        <img src="../assets/images/logo-text.png" class="light-logo" alt="homepage" />
                     </span>
                 </a>
             </div>
@@ -47,7 +47,7 @@
             <!-- ============================================================== -->
             <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
                 <!-- Notification -->
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
                         id="bell" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span><i data-feather="bell" class="svg-icon"></i></span>
@@ -56,9 +56,9 @@
                     <div class="dropdown-menu dropdown-menu-left mailbox animated bounceInDown">
                         <ul class="list-style-none">
                             <li>
-                                <div class="message-center notifications position-relative">
+                                <div class="message-center notifications position-relative"> -->
                                     <!-- Message -->
-                                    <a href="javascript:void(0)"
+                                    <!-- <a href="javascript:void(0)"
                                         class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <div class="btn btn-danger rounded-circle btn-circle"><i data-feather="airplay"
                                                 class="text-white"></i></div>
@@ -69,9 +69,9 @@
                                                 admin!</span>
                                             <span class="font-12 text-nowrap d-block text-muted">9:30 AM</span>
                                         </div>
-                                    </a>
+                                    </a> -->
                                     <!-- Message -->
-                                    <a href="javascript:void(0)"
+                                    <!-- <a href="javascript:void(0)"
                                         class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-success text-white rounded-circle btn-circle"><i
                                                 data-feather="calendar" class="text-white"></i></span>
@@ -81,9 +81,9 @@
                                                 a reminder that you have event</span>
                                             <span class="font-12 text-nowrap d-block text-muted">9:10 AM</span>
                                         </div>
-                                    </a>
+                                    </a> -->
                                     <!-- Message -->
-                                    <a href="javascript:void(0)"
+                                    <!-- <a href="javascript:void(0)"
                                         class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-info rounded-circle btn-circle"><i data-feather="settings"
                                                 class="text-white"></i></span>
@@ -94,9 +94,9 @@
                                                 as you want</span>
                                             <span class="font-12 text-nowrap d-block text-muted">9:08 AM</span>
                                         </div>
-                                    </a>
+                                    </a> -->
                                     <!-- Message -->
-                                    <a href="javascript:void(0)"
+                                    <!-- <a href="javascript:void(0)"
                                         class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-primary rounded-circle btn-circle"><i data-feather="box"
                                                 class="text-white"></i></span>
@@ -117,12 +117,12 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> -->
                 <!-- End Notification -->
                 <!-- ============================================================== -->
                 <!-- create new -->
                 <!-- ============================================================== -->
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i data-feather="settings" class="svg-icon"></i>
@@ -133,8 +133,8 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
-                </li>
-                <li class="nav-item d-none d-md-block">
+                </li> -->
+                <!-- <li class="nav-item d-none d-md-block">
                     <a class="nav-link" href="javascript:void(0)">
                         <div class="customize-input">
                             <select class="custom-select form-control bg-white custom-radius custom-shadow border-0">
@@ -145,7 +145,7 @@
                             </select>
                         </div>
                     </a>
-                </li>
+                </li> -->
             </ul>
             <!-- ============================================================== -->
             <!-- Right side toggle and nav items -->
@@ -154,7 +154,7 @@
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
-                <li class="nav-item d-none d-md-block">
+                <!-- <li class="nav-item d-none d-md-block">
                     <a class="nav-link" href="javascript:void(0)">
                         <form>
                             <div class="customize-input">
@@ -164,20 +164,20 @@
                             </div>
                         </form>
                     </a>
-                </li>
+                </li> -->
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                            width="40">
-                        <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span class="text-dark">Jason
-                                Doe</span> <i data-feather="chevron-down" class="svg-icon"></i></span>
+                        {{-- <img src="../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"width="40"> --}}
+                        <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span class="text-dark">
+                            {{ Auth()->user()->name ?? '-' }}
+                        </span> <i data-feather="chevron-down" class="svg-icon"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
+                        <!-- <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
                             My Profile</a>
                         <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
@@ -190,8 +190,8 @@
                         <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
                                 class="svg-icon mr-2 ml-1"></i>
                             Account Setting</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
+                        <div class="dropdown-divider"></div> -->
+                        <a class="dropdown-item" href="{{ route('logout') }}"><i data-feather="power"
                                 class="svg-icon mr-2 ml-1"></i>
                             Logout</a>
                         <div class="dropdown-divider"></div>

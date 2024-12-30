@@ -6,27 +6,25 @@
 <div class="page-breadcrumb">
     <div class="row">
         <div class="col-7 align-self-center">
-            <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">View Customer</h4>
+            <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">View Appointment</h4>
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item"><a href="#" class="text-muted">Customer</a>
+                        <li class="breadcrumb-item"><a href="#" class="text-muted">Appointment</a>
                         </li>
-                        <li class="breadcrumb-item text-muted active" aria-current="page">View Customer</li>
+                        <li class="breadcrumb-item text-muted active" aria-current="page">View Appointment</li>
                     </ol>
                 </nav>
             </div>
         </div>
-        <!-- <div class="col-5 align-self-center">
-                <div class="customize-input float-right">
-                    <select
-                        class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
-                        <option selected>Aug 19</option>
-                        <option value="1">July 19</option>
-                        <option value="2">Jun 19</option>
-                    </select>
-                </div>
-            </div> -->
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <select name="forma" onchange="location = this.value;" class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option value="#">Table view</option>
+                    <option value="{{ route('appointments.index') }}">Calendar View</option>
+                </select>
+            </div>
+        </div>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -44,7 +42,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">List of Customer</h4>
+                    <h4 class="card-title">List of Appointment</h4>
                     <h6 class="card-subtitle">
                         @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -61,8 +59,8 @@
                             </button>
                         </div>
                         @endif
-                        <!-- 
-                            On a per-column basis (i.e. order by a specific column and
+
+                        <!-- On a per-column basis (i.e. order by a specific column and
                             then a secondary column if the data in the first column is identical), through the
                             <code> columns.orderData</code> option. -->
                     </h6>
@@ -70,21 +68,27 @@
                         <table id="multi_col_order" class="table table-striped table-bordered display no-wrap" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Customer ID</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">HP</th>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Customer Name</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Time</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customer as $cust)
+                                @foreach ($appointments as $app)
                                 <tr>
-                                    <td class="text-center">{{ $cust->Customer_Id }}</td>
-                                    <td>{{ $cust->Customer_Name }}</td>
-                                    <td class="text-center">{{ $cust->Customer_HP }}</td>
+                                    <td class="text-center">{{ $app->App_Id }}</td>
+                                    <td>{{ $app->Customer_Name }}</td>
+                                    <td class="text-center">{{ $app->App_Date }}</td>
+                                    <td class="text-center">{{ \Carbon\Carbon::createFromFormat('H:i:s', $app->App_Time)->format('h:i A') }}</td>
+                                    <td class="text-center">RM {{ $app->App_Price }}</td>
+                                    <td class="text-center">{{ $app->App_Status }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <a class="btn btn-primary btn-sm mr-2" href="{{ route('customer.show', ['id' => $cust->Customer_Id]) }}">
+                                            <a class="btn btn-primary btn-sm mr-2" href="{{ route('appointments.show', ['appointment' => $app->App_Id]) }}">
                                                 <i class="fas fa-pencil-alt"></i> View / Edit
                                             </a>
                                             <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmationModal">
@@ -94,7 +98,8 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                {{-- <tr>
+                                {{--
+                                    <tr>
                                         <td>Tiger</td>
                                         <td>Nixon</td>
                                         <td>System Architect</td>
@@ -511,12 +516,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this customer?
+                    Are you sure you want to delete this appointment?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    @if($cust && isset($cust->Customer_Id))
-                    <form action="{{ route('customer.destroy', ['id' => $cust->Customer_Id]) }}" method="POST">
+                    @if($app && isset($app->App_Id))
+                    <form id="delete-appointment-form" action="{{ route('appointments.destroy', ['appointment' => $app->App_Id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -537,14 +542,43 @@
 @endsection
 @push('custom-scripts')
 <link href="../assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-
 <!--This page plugins -->
+
 <script src="../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../assets/js/pages/datatable/datatable-basic.init.js"></script>
 <script>
     $(document).ready(function() {
         // Auto-close alerts after 5 seconds (5000 milliseconds)
         $(".alert").delay(5000).slideUp(300);
+    });
+
+    $(document).ready(function() {
+        var table = $('#multi_col_order').DataTable(); // Get the reference to the DataTable instance
+        if ($.fn.DataTable.isDataTable('#multi_col_order')) {
+            table.destroy(); // Destroy the existing DataTable instance
+        }
+        $('#multi_col_order').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "/get-appointments", // Ensure this matches your Laravel route
+                "type": "GET",
+                "dataSrc": ""
+            },
+            "columns": [{
+                    "data": "appointment"
+                },
+                {
+                    "data": "Staff_Name"
+                },
+                {
+                    "data": "Staff_HP"
+                },
+                {
+                    "data": "Staff_Address"
+                }
+            ]
+        });
     });
 </script>
 @endpush

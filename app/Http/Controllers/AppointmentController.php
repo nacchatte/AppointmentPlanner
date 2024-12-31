@@ -260,6 +260,20 @@ class AppointmentController extends Controller
         return redirect()->route('appointments.table')->with('success', 'Appointment updated successfully!');
     }
 
+//logic to implement email/reminders
+public function sendReminders() {
+    $appointments = Appointment::where('date', Carbon::now()->addDay())->get();
+
+    foreach ($appointments as $appointment) {
+
+
+        // Send SMS (using Twilio or other service)
+        $smsService = new SmsService();
+        $smsService->send($appointment->customer->phone, "Reminder: You have an appointment on {$appointment->date}.");
+    }
+
+    return response()->json(['message' => 'Reminders sent successfully.']);
+}
 
 
     public function destroy(Appointment $appointment)

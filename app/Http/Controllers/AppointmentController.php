@@ -265,8 +265,7 @@ public function sendReminders() {
     $appointments = Appointment::where('date', Carbon::now()->addDay())->get();
 
     foreach ($appointments as $appointment) {
-        // Send Email
-        Mail::to($appointment->customer->email)->send(new AppointmentReminder($appointment));
+
 
         // Send SMS (using Twilio or other service)
         $smsService = new SmsService();

@@ -1,6 +1,6 @@
 This is a project dedicated to TMA3083 Software Engineering Laboratory and is currently being used for the continuation for the course TMA4093 Software Maintenance and Configuration Management. 
 
-This project was named Appointment Planner as requested by our client to create a website to smoothen his job of providing cleaning services. We used Laravel as the framework to assist this project.
+This project was named Appointment Planner as requested by our client to create a website to smoothen his job of providing cleaning services. We used Laravel and Bootstrap as the framework to assist this project.
 
 - by Team OyenZ
 

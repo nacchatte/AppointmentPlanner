@@ -40,6 +40,7 @@ class AuthController extends Controller
         'password.required' => 'Email cannot be empty!',
        ]);
 
+       //fix
        if(Auth::attempt($credentials))
        {
             $request->session()->generate();

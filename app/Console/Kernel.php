@@ -29,3 +29,9 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 }
+
+protected function schedule(Schedule $schedule) {
+    $schedule->call(function () {
+        app(AppointmentController::class)->sendReminders();
+    })->dailyAt('08:00');
+}

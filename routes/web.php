@@ -82,3 +82,16 @@ Route::get('/generate-sales-report/{month}/{year}', [PdfController::class, 'gene
 Route::get('/sales-reports/{month}/{year}/download', [PdfController::class, 'downloadPdf'])->name('sales-reports.download')->middleware('auth');
 Route::post('/sendmail/{month}/{year}', [PdfController::class, 'sendSalesReportEmail'])->name('sales-reports.email')->middleware('auth');
 Route::get('/sales-reports', [PdfController::class, 'index'])->name('sales-reports');
+
+//add role-based-dashboard
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
+});
+
+Route::middleware(['auth', 'role:manager'])->group(function () {
+    Route::get('/dashboard/manager', [DashboardController::class, 'manager'])->name('dashboard.manager');
+});
+
+Route::middleware(['auth', 'role:employee'])->group(function () {
+    Route::get('/dashboard/employee', [DashboardController::class, 'employee'])->name('dashboard.employee');
+});
